@@ -11,6 +11,7 @@ imageCapture::~imageCapture()
 {
 }
 
+
 imageCapture::imageCapture(Mat image, int& counter, int amountOfColors, int AmountOfProjectedPointsPerColor, int totalProjectedColumns, vector<vector<Point>>& twoDPointSpace) {
 	colorObject redLower("redLower"), redUpper("redUpper"), green("green"), blue("blue"), white("white");
 
