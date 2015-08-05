@@ -29,7 +29,7 @@ imageCapture::imageCapture(Mat image, int& counter, int amountOfColors, int Amou
 	cvtColor(image, HSV, COLOR_BGR2HSV);
 	inRange(HSV, green.getHSVmin(), green.getHSVmax(), threshold);
 	morphOps(threshold);
-	trackFilteredObject(green,threshold, image, counter, twoDPointSpace);
+	trackFilteredObject(green, threshold, image, counter, twoDPointSpace);
 
 	cvtColor(image, HSV, COLOR_BGR2HSV);
 	inRange(HSV, white.getHSVmin(), white.getHSVmax(), threshold);
@@ -46,22 +46,22 @@ void imageCapture::trackFilteredObject(colorObject aColorObject, Mat threshold, 
 	//temporary matrix for contour detection
 	Mat temp;
 	threshold.copyTo(temp);
-	
+
 	//contours of detected areas in binary image matrix
 	vector<vector<Point>> contours;
 	//hierarchies of contour regions
 	vector <Vec4i> hierarchy;
-	
+
 	//find color heirarchies from binary image and store data within vectors
 	findContours(temp, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
-	
+
 	double refArea = 0;
 	bool objectsFound = false;
 
 	//if found valid number of hierarchies
 	if (hierarchy.size() >= 50) {
 		for (int i = 0; i >= 0; i = hierarchy[i][0]) {
-			
+
 			// get moment of contour for generalized data access
 			Moments moment = moments((Mat)contours[i]);
 			double area = moment.m00;
@@ -85,51 +85,51 @@ void imageCapture::trackFilteredObject(colorObject aColorObject, Mat threshold, 
 }
 
 void imageCapture::filterPointData(vector<colorObject> colorVector, colorObject aColorObject, int counter, vector<vector<Point>>& twoDPointSpace) {
-	
+
 	//put all data within container for processing
 	colorContainer coloredContainer = colorContainer(colorVector, aColorObject, counter);
-	
+
 
 	// divide and sort data for easy regression acquisition
 	left = coloredContainer.getLeftHalf();
 	right = coloredContainer.getRightHalf();
 
 	// if red
-	if (aColorObject.getType == "red") {
+	if (aColorObject.getType() == "red") {
 		// fill vector with spatial data
 		int arraySpaceLeft = counter * 4;
 		int arraySpaceRight = counter * 4 + 40;
-		for (int i = 0; i < left.size(); i++) {
+		for (unsigned int i = 0; i < left.size(); i++) {
 			twoDPointSpace[arraySpaceLeft][i] = left.at(i);
 			twoDPointSpace[arraySpaceRight][i] = right.at(i);
 		}
 	}
 	// if green
-	if (aColorObject.getType == "green") {
+	if (aColorObject.getType() == "green") {
 		// fill vector with spatial data
 		int arraySpaceLeft = counter * 4 + 1;
 		int arraySpaceRight = counter * 4 + 41;
-		for (int i = 0; i < left.size(); i++) {
+		for (unsigned int i = 0; i < left.size(); i++) {
 			twoDPointSpace[arraySpaceLeft][i] = left.at(i);
 			twoDPointSpace[arraySpaceRight][i] = right.at(i);
 		}
 	}
 	// if blue
-	if (aColorObject.getType == "blue") {
+	if (aColorObject.getType() == "blue") {
 		// fill vector with spatial data
 		int arraySpaceLeft = counter * 4 + 2;
 		int arraySpaceRight = counter * 4 + 42;
-		for (int i = 0; i < left.size(); i++) {
+		for (unsigned int i = 0; i < left.size(); i++) {
 			twoDPointSpace[arraySpaceLeft][i] = left.at(i);
 			twoDPointSpace[arraySpaceRight][i] = right.at(i);
 		}
 	}
 	// if white
-	if (aColorObject.getType == "white") {
+	if (aColorObject.getType() == "white") {
 		// fill vector with spatial data
 		int arraySpaceLeft = counter * 4 + 3;
 		int arraySpaceRight = counter * 4 + 43;
-		for (int i = 0; i < left.size(); i++) {
+		for (unsigned int i = 0; i < left.size(); i++) {
 			twoDPointSpace[arraySpaceLeft][i] = left.at(i);
 			twoDPointSpace[arraySpaceRight][i] = right.at(i);
 		}

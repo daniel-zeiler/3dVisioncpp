@@ -159,6 +159,7 @@
     <ClInclude Include="bestFit.h" />
     <ClInclude Include="colorContainer.h" />
     <ClInclude Include="colorObject.h" />
+    <ClInclude Include="DoublePrecision.h" />
     <ClInclude Include="imageCapture.h" />
     <ClInclude Include="regressionModel.h" />
     <ClInclude Include="Source.h" />
