@@ -2,7 +2,6 @@
 #include "colorContainer.h"
 #include "regressionModel.h"
 #include "imageCapture.h"
-#include "regressionModel.h"
 #include <vector>
 #include "Source.h"
 
@@ -20,7 +19,7 @@ vector < vector<Point3d>> threeDPointSpace(TOTAL_PROJECTED_COLUMNS, vector<Point
 vector<vector<Point>> twoDPointSpace(TOTAL_PROJECTED_COLUMNS,vector<Point>(AMOUNT_OF_PROJECTED_POINTS_PER_COLOR));
 
 // regression space
-vector < Vec3i > regressionSpace;
+vector < Vec4i > regressionSpace;
 
 int main() {
 
@@ -44,6 +43,7 @@ int main() {
 			//process image
 			imageCapture processedImage = imageCapture(image, counter, AMOUNT_OF_COLORS, AMOUNT_OF_PROJECTED_POINTS_PER_COLOR, TOTAL_PROJECTED_COLUMNS, twoDPointSpace);
 			if (counter == COUNTER_TOTAL) {
+				regression.build3dSpace(regressionSpace,threeDPointSpace,twoDPointSpace);
 				counter = 0;
 			}
 			//wait for next frame
@@ -70,7 +70,7 @@ int main() {
 			cin >> distance;
 
 			while (!oneStep) {
-				
+
 				//process image
 				imageCapture processedImage = imageCapture(image, counter, AMOUNT_OF_COLORS, AMOUNT_OF_PROJECTED_POINTS_PER_COLOR, TOTAL_PROJECTED_COLUMNS, twoDPointSpace);
 				cap >> image;
@@ -80,19 +80,18 @@ int main() {
 					for (int j = 0; j < TOTAL_PROJECTED_COLUMNS; j++) {
 						for (int k = 0; k < AMOUNT_OF_PROJECTED_POINTS_PER_COLOR; k++) {
 							// build 3d point calibration space
-							dataCalibration[k][j][i] = Point3d(twoDPointSpace[k][j].x,twoDPointSpace[k][j].y,distance);
-							
+							dataCalibration[k][j][i] = Point3d(twoDPointSpace[k][j].x, twoDPointSpace[k][j].y, distance);
+
 							// get more data till done
 							oneStep = true;
 						}
 					}
 				}
-
 				//wait for next frame
 				waitKey(33);
 			}
-
-		}		
+		}
+		//build regression data for non-calibration state
 		regression.buildRegressionSpace(dataCalibration, numberOfCalibrationTests);
 		cout << "congratulations on successful calibration!";
 		main();

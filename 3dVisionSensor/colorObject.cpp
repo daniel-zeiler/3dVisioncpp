@@ -37,19 +37,19 @@ colorObject::~colorObject()
 {
 }
 
-int colorObject::getXPos() {
+double colorObject::getXPos() {
 	return colorObject::xPos;
 }
 
-int colorObject::getYPos() {
+double colorObject::getYPos() {
 	return colorObject::yPos;
 }
 
-void colorObject::setXPos(int x) {
+void colorObject::setXPos(double x) {
 	colorObject::xPos = x;
 }
 
-void colorObject::setYPos(int y) {
+void colorObject::setYPos(double y) {
 	colorObject::yPos = y;
 }
 

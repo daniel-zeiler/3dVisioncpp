@@ -18,7 +18,7 @@ colorContainer::colorContainer(vector<colorObject> theColors, colorObject color,
 	int size = theColors.size();
 	pointArray.resize(size);
 	for (int i = 0; i < size; i++) {
-		pointArray.push_back(Point(theColors.at(i).getXPos, theColors.at(i).getYPos()));
+		pointArray.push_back(Point(theColors.at(i).getXPos(), theColors.at(i).getYPos()));
 	}
 	setType(color.getType());
 	setCounter(counter);

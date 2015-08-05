@@ -14,11 +14,11 @@ public:
 
 	colorObject(String name);
 
-	int getXPos();
-	int getYPos();
+	double getXPos();
+	double getYPos();
 
-	void setXPos(int x);
-	void setYPos(int y);
+	void setXPos(double x);
+	void setYPos(double y);
 
 	Scalar getHSVmin();
 	Scalar getHSVmax();
@@ -33,7 +33,7 @@ public:
 	void setColorLabel(Scalar colorLabelScalar) { colorLabel = colorLabelScalar; }
 
 private:
-	int xPos, yPos;
+	double xPos, yPos;
 	string type;
 	Scalar HSVmin, HSVmax;
 	Scalar colorLabel;
