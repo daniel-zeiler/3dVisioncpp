@@ -99,7 +99,7 @@ void regressionModel::build3dSpace(vector<Vec4i> regressionSpace, vector < vecto
 	int x, y, C, z = 0;
 	int xSize = threeDPointSpace.size();
 	int ySize = threeDPointSpace[0].size();
-	int xCounter, yCounter = 0;
+	int xCounter=0, yCounter = 0;
 
 	// for each vector of integers(A,B,C,D) such that Ax + By + Cz + D = 0 
 	for each(Vec4i vector in regressionSpace) {

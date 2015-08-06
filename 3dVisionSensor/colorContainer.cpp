@@ -22,7 +22,7 @@ colorContainer::colorContainer(vector<colorObject> theColors, colorObject color,
 	}
 	setType(color.getType());
 	setCounter(counter);
-	std::sort(pointArray.begin(), pointArray.end(), xOperator);
+	//std::sort(pointArray.begin(), pointArray.end(), xOperator);
 	divideArray();
 }
 
@@ -37,11 +37,11 @@ void colorContainer::divideArray() {
 	for (int i = 0; i < size/2; i++) {
 		leftHalf.push_back(pointArray.at(i));
 	}
-	std::sort(leftHalf.begin(), leftHalf.end(), yOperator);
+	//std::sort(leftHalf.begin(), leftHalf.end(), yOperator);
 	for (int i = (size / 2); i < size; i++) {
 		rightHalf.push_back(pointArray.at(i));
 	}
-	std::sort(rightHalf.begin(), rightHalf.end(), yOperator);
+	//std::sort(rightHalf.begin(), rightHalf.end(), yOperator);
 }
 
 void colorContainer::setType(string typeName) {
