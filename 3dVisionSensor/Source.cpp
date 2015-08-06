@@ -58,7 +58,7 @@ int main() {
 
 		// user enters number of calibration steps
 		int numberOfCalibrationTests;
-		std::cout << "Number of test runs:";
+		std::cout << "Number of test runs:\n";
 		cin >> numberOfCalibrationTests;
 
 		//calibration space
@@ -68,7 +68,7 @@ int main() {
 			
 			// user enters current calibration distance
 			double distance;
-			std::cout << "distance from camera to calibration zone:";
+			std::cout << "distance from camera to calibration zone:\n";
 			cin >> distance;
 			videoDisplay.open("structuredLight.avi");
 
@@ -95,7 +95,7 @@ int main() {
 		}
 		//build regression data for non-calibration state
 		regression.buildRegressionSpace(dataCalibration, numberOfCalibrationTests);
-		std::cout << "congratulations on successful calibration!";
+		std::cout << "congratulations on successful calibration!\n";
 		main();
 	}
 }

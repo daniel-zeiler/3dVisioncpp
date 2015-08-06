@@ -11,12 +11,12 @@ regressionModel::regressionModel() {
 regressionModel::regressionModel(vector < Vec4i >& regressionSpace){
 	// attempt to read from file
 	char filename[] = "regression.csv";
-	fstream appendFileToWorkWith;
-	appendFileToWorkWith.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);	
-	if (appendFileToWorkWith) {
+	fstream appendFileToWorkWith("regression.csv");
+	if (appendFileToWorkWith.good()) {
+		appendFileToWorkWith.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
 		// file is found, ask user if recalibration is required
 		string calibration;
-		cout << "recalibrate data? (Y/N):";
+		cout << "recalibrate data? (Y/N):\n";
 		getline(cin, calibration);
 		if (calibration == "Y") {
 			// time to recalibrate!
@@ -28,6 +28,7 @@ regressionModel::regressionModel(vector < Vec4i >& regressionSpace){
 		}
 	}
 	else {
+		cout << "this application requires calibration\n";
 		// time to calibrate!
 		fileSet = false;
 	}
