@@ -1,7 +1,5 @@
 #include "imageCapture.h"
 
-
-
 imageCapture::imageCapture()
 {
 }
