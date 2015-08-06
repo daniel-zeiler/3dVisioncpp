@@ -24,27 +24,30 @@ vector < Vec4i > regressionSpace;
 int main() {
 
 	Mat image;
-	//initialize capture
-	VideoCapture cap;
+	//initialize capture and structured light display
+	VideoCapture cap,videoDisplay;
 	cap.open(0);
 	cap.set(CV_CAP_PROP_FRAME_WIDTH, FRAME_WIDTH);
 	cap.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
+	
+	//build regression model
 	regressionModel regression = regressionModel(regressionSpace);
 	int counter = 0;
-	
 
 	// if regression space is built
 	if (regression.isFileSet()) {
+		videoDisplay.open("structuredLight.avi");
 		while (1) {
-
 			//capture image
 			cap >> image;
 
 			//process image
 			imageCapture processedImage = imageCapture(image, counter, AMOUNT_OF_COLORS, AMOUNT_OF_PROJECTED_POINTS_PER_COLOR, TOTAL_PROJECTED_COLUMNS, twoDPointSpace);
-			if (counter == COUNTER_TOTAL) {
+			if (videoDisplay.get(CV_CAP_PROP_POS_FRAMES) < videoDisplay.get(CV_CAP_PROP_FRAME_COUNT)) {
+				// when each scan complete update 3d space model
 				regression.build3dSpace(regressionSpace,threeDPointSpace,twoDPointSpace);
 				counter = 0;
+				videoDisplay.open("structuredLight.avi");
 			}
 			//wait for next frame
 			waitKey(33);
@@ -55,25 +58,26 @@ int main() {
 
 		// user enters number of calibration steps
 		int numberOfCalibrationTests;
-		cout << "Number of test runs:";
+		std::cout << "Number of test runs:";
 		cin >> numberOfCalibrationTests;
 
 		//calibration space
 		vector< vector< vector<Point3d> > > dataCalibration(TOTAL_PROJECTED_COLUMNS,vector<vector<Point3d>>(AMOUNT_OF_PROJECTED_POINTS_PER_COLOR,vector<Point3d>(numberOfCalibrationTests)));
 
 		for (int i = 0; i < numberOfCalibrationTests; i++) {
-			bool oneStep = false;
 			
 			// user enters current calibration distance
 			double distance;
-			cout << "distance from camera to calibration zone:";
+			std::cout << "distance from camera to calibration zone:";
 			cin >> distance;
+			videoDisplay.open("structuredLight.avi");
 
-			while (!oneStep) {
+			// while on current loop
+			while (videoDisplay.get(CV_CAP_PROP_POS_FRAMES) < videoDisplay.get(CV_CAP_PROP_FRAME_COUNT)) {
 
 				//process image
-				imageCapture processedImage = imageCapture(image, counter, AMOUNT_OF_COLORS, AMOUNT_OF_PROJECTED_POINTS_PER_COLOR, TOTAL_PROJECTED_COLUMNS, twoDPointSpace);
 				cap >> image;
+				imageCapture processedImage = imageCapture(image, counter, AMOUNT_OF_COLORS, AMOUNT_OF_PROJECTED_POINTS_PER_COLOR, TOTAL_PROJECTED_COLUMNS, twoDPointSpace);
 
 				//if all images processed from current calibration phase
 				if (counter == COUNTER_TOTAL) {
@@ -82,8 +86,6 @@ int main() {
 							// build 3d point calibration space
 							dataCalibration[k][j][i] = Point3d(twoDPointSpace[k][j].x, twoDPointSpace[k][j].y, distance);
 
-							// get more data till done
-							oneStep = true;
 						}
 					}
 				}
@@ -93,7 +95,7 @@ int main() {
 		}
 		//build regression data for non-calibration state
 		regression.buildRegressionSpace(dataCalibration, numberOfCalibrationTests);
-		cout << "congratulations on successful calibration!";
+		std::cout << "congratulations on successful calibration!";
 		main();
 	}
 }

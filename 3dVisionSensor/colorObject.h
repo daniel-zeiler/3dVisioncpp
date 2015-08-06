@@ -10,18 +10,15 @@ class colorObject
 {
 public:
 	colorObject();
+	colorObject(String name);
 	~colorObject();
 
-	colorObject(String name);
-
-	double getXPos();
-	double getYPos();
+	double getXPos(), getYPos();
 
 	void setXPos(double x);
 	void setYPos(double y);
 
-	Scalar getHSVmin();
-	Scalar getHSVmax();
+	Scalar getHSVmin(), getHSVmax();
 
 	void setHSVmin(Scalar HSVmin);
 	void setHSVmax(Scalar HSVmax);
@@ -34,7 +31,8 @@ public:
 
 private:
 	double xPos, yPos;
+
 	string type;
-	Scalar HSVmin, HSVmax;
-	Scalar colorLabel;
+
+	Scalar HSVmin, HSVmax, colorLabel;
 };
