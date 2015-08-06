@@ -14,11 +14,13 @@ imageCapture::~imageCapture()
 imageCapture::imageCapture(Mat image, int& counter, int amountOfColors, int AmountOfProjectedPointsPerColor, int totalProjectedColumns, vector<vector<Point>>& twoDPointSpace) {
 	colorObject redLower("redLower"), redUpper("redUpper"), green("green"), blue("blue"), white("white");
 
+	// get blue points
 	cvtColor(image, HSV, COLOR_BGR2HSV);
 	inRange(HSV, blue.getHSVmin(), blue.getHSVmax(), threshold);
 	morphOps(threshold);
 	trackFilteredObject(blue, threshold, image, counter, twoDPointSpace);
 
+	// get red points
 	cvtColor(image, HSV, COLOR_BGR2HSV);
 	inRange(HSV, redLower.getHSVmin(), redLower.getHSVmax(), lowerRedImage);
 	inRange(HSV, redUpper.getHSVmin(), redUpper.getHSVmax(), upperRedImage);
@@ -26,11 +28,13 @@ imageCapture::imageCapture(Mat image, int& counter, int amountOfColors, int Amou
 	morphOps(threshold);
 	trackFilteredObject(redUpper, threshold, image, counter, twoDPointSpace);
 
+	//get green points
 	cvtColor(image, HSV, COLOR_BGR2HSV);
 	inRange(HSV, green.getHSVmin(), green.getHSVmax(), threshold);
 	morphOps(threshold);
 	trackFilteredObject(green, threshold, image, counter, twoDPointSpace);
 
+	//get white points
 	cvtColor(image, HSV, COLOR_BGR2HSV);
 	inRange(HSV, white.getHSVmin(), white.getHSVmax(), threshold);
 	morphOps(threshold);

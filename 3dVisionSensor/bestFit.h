@@ -13,12 +13,3 @@ public:
 	bestFit(unsigned int vcount, const std::vector<double> *points, unsigned int vstride, const double *weights, unsigned int wstride, std::vector<double> &plane);
 	~bestFit();
 };
-
-struct vector3 {
-	double p[3];
-	vector3(void){
-		p[0] = 0.0;
-		p[1] = 0.0;
-		p[2] = 0.0;
-	}
-};

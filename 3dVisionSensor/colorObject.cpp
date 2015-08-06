@@ -6,6 +6,7 @@ colorObject::colorObject()
 
 colorObject::colorObject(String type) {
 	setType(type);
+	// define red, green, blue, or white point characteristics
 	if (type == "blue") {
 		setHSVmin(Scalar(100, 150, 0));
 		setHSVmax(Scalar(140, 255, 255));
