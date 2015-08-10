@@ -6,6 +6,9 @@ bestFit::bestFit()
 {
 }
 
+/*
+Create best fit plane fitting test data for each point.
+*/
 bestFit::bestFit(unsigned int vcount, const std::vector<double> *points, unsigned int vstride, const double *weights, unsigned int wstride, std::vector<double> &plane) {
 	bool ret = false;
 	DoublePrecision::Vec3 kOrigin(0, 0, 0);

@@ -51,6 +51,7 @@ void imageCapture::trackFilteredObject(colorObject aColorObject, Mat threshold, 
 
 	//contours of detected areas in binary image matrix
 	vector<vector<Point>> contours;
+
 	//hierarchies of contour regions
 	vector <Vec4i> hierarchy;
 

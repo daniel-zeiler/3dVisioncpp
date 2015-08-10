@@ -26,6 +26,4 @@ private:
 	void setType(string type);
 
 	void setCounter(int counter);
-
-	bool xOperator(Point p1, Point p2), yOperator(Point p1, Point p2);
 };
