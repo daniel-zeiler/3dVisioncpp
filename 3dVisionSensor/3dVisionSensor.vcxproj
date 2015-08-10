@@ -91,10 +91,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Dependencies\freeglut\include;C:\Dependencies\glew-1.11.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Dependencies\freeglut\lib;C:\Dependencies\glew-1.11.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -152,19 +155,50 @@
     <ClCompile Include="colorContainer.cpp" />
     <ClCompile Include="colorObject.cpp" />
     <ClCompile Include="imageCapture.cpp" />
+    <ClCompile Include="Init_GLEW.cpp" />
+    <ClCompile Include="Init_GLUT.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Model_Manager.cpp" />
+    <ClCompile Include="PointCloud.cpp" />
     <ClCompile Include="regressionModel.cpp" />
+    <ClCompile Include="Scene_Manager.cpp" />
+    <ClCompile Include="Shader_Manager.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bestFit.h" />
     <ClInclude Include="colorContainer.h" />
     <ClInclude Include="colorObject.h" />
+    <ClInclude Include="ContextInfo.h" />
     <ClInclude Include="DoublePrecision.h" />
+    <ClInclude Include="FrameBufferInfo.h" />
+    <ClInclude Include="IGameObject.h" />
+    <ClInclude Include="IListener.h" />
     <ClInclude Include="imageCapture.h" />
+    <ClInclude Include="Init_GLEW.h" />
+    <ClInclude Include="Init_GLUT.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="Models_Manager.h" />
+    <ClInclude Include="PointCloud.h" />
     <ClInclude Include="regressionModel.h" />
-    <ClInclude Include="Source.h" />
+    <ClInclude Include="Scene_Manager.h" />
+    <ClInclude Include="Shader_Manager.h" />
+    <ClInclude Include="VertexFormat.h" />
+    <ClInclude Include="WindowInfo.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Fragment_Shader.glsl" />
+    <None Include="packages.config" />
+    <None Include="Vertex_Shader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\glm.0.9.6.3\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.6.3\build\native\glm.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\glm.0.9.6.3\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.6.3\build\native\glm.targets'))" />
+  </Target>
 </Project>

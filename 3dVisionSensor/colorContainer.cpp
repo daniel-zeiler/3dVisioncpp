@@ -5,13 +5,21 @@ colorContainer::colorContainer()
 {
 }
 
-bool colorContainer::xOperator(Point p1, Point p2) {
-	return (p1.x < p2.x);
-}
+struct CompareY
+{
+	bool operator()(Point p1, Point p2) const
+	{
+		return  (p1.y < p2.y);
+	}
+};
 
-bool colorContainer::yOperator(Point p1, Point p2) {
-	return (p1.y < p2.y);
-}
+struct CompareX
+{
+	bool operator()(Point p1, Point p2) const
+	{
+		return  (p1.x < p2.x);
+	}
+};
 
 colorContainer::colorContainer(vector<colorObject> theColors, colorObject color, int counter) {
 	
@@ -22,7 +30,7 @@ colorContainer::colorContainer(vector<colorObject> theColors, colorObject color,
 	}
 	setType(color.getType());
 	setCounter(counter);
-	//std::sort(pointArray.begin(), pointArray.end(), xOperator);
+	std::sort(pointArray.begin(), pointArray.end(), CompareX());
 	divideArray();
 }
 
@@ -37,7 +45,7 @@ void colorContainer::divideArray() {
 	for (int i = 0; i < size/2; i++) {
 		leftHalf.push_back(pointArray.at(i));
 	}
-	//std::sort(leftHalf.begin(), leftHalf.end(), yOperator);
+	std::sort(leftHalf.begin(), leftHalf.end(), CompareY());
 	for (int i = (size / 2); i < size; i++) {
 		rightHalf.push_back(pointArray.at(i));
 	}

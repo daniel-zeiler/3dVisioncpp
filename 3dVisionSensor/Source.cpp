@@ -2,8 +2,10 @@
 #include "colorContainer.h"
 #include "regressionModel.h"
 #include "imageCapture.h"
+#include "Init_GLUT.h"
+#include "Scene_Manager.h"
+#include "PointCloud.h"
 #include <vector>
-#include "Source.h"
 
 const int FRAME_WIDTH = 640;
 const int FRAME_HEIGHT = 480;
@@ -11,7 +13,6 @@ const int COUNTER_TOTAL = 10;
 const int AMOUNT_OF_PROJECTED_POINTS_PER_COLOR = 50;
 const int AMOUNT_OF_COLORS = 4;
 const int TOTAL_PROJECTED_COLUMNS = COUNTER_TOTAL * AMOUNT_OF_COLORS * 2;
-
 // current 3d space
 vector < vector<Point3d>> threeDPointSpace(TOTAL_PROJECTED_COLUMNS, vector<Point3d>(AMOUNT_OF_PROJECTED_POINTS_PER_COLOR));
 
@@ -21,15 +22,27 @@ vector<vector<Point>> twoDPointSpace(TOTAL_PROJECTED_COLUMNS,vector<Point>(AMOUN
 // regression space
 vector < Vec4i > regressionSpace;
 
+using namespace Core;
+using namespace Init;
+
 int main() {
 
-	Mat image;
 	//initialize capture and structured light display
+	Mat image;
 	VideoCapture cap,videoDisplay;
 	cap.open(0);
 	cap.set(CV_CAP_PROP_FRAME_WIDTH, FRAME_WIDTH);
 	cap.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
-	
+
+	//initialize OpenGl
+	WindowInfo window(std::string("3dPointCloud"), 400, 200, 800, 600, true);
+	ContextInfo context(4, 3, true);
+	FramebufferInfo frameBufferInfo(true, true, true, true);
+	Init_GLUT::Init(window, context, frameBufferInfo);
+	Managers::Scene_Manager* scene = new Managers::Scene_Manager();
+	Init_GLUT::SetListener(scene);
+
+
 	//build regression model
 	regressionModel regression = regressionModel(regressionSpace);
 	int counter = 0;
@@ -47,6 +60,11 @@ int main() {
 				// when each scan complete update 3d space model
 				regression.build3dSpace(regressionSpace,threeDPointSpace,twoDPointSpace);
 				counter = 0;
+				Rendering::Models::PointCloud* pointcloud = new Rendering::Models::PointCloud();
+				pointcloud->SetProgram(Managers::Shader_Manager::GetShader("colorShader"));
+				pointcloud->Create(threeDPointSpace);
+				scene->GetModels_Manager()->SetModel("pointcloud", pointcloud);
+				Init_GLUT::Run();
 				videoDisplay.open("structuredLight.avi");
 			}
 			//wait for next frame
@@ -85,7 +103,6 @@ int main() {
 						for (int k = 0; k < AMOUNT_OF_PROJECTED_POINTS_PER_COLOR; k++) {
 							// build 3d point calibration space
 							dataCalibration[k][j][i] = Point3d(twoDPointSpace[k][j].x, twoDPointSpace[k][j].y, distance);
-
 						}
 					}
 				}
